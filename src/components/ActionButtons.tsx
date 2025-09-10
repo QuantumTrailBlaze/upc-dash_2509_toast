@@ -80,12 +80,15 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
 
       if (response.ok) {
         const data = await response.json(); // Parse response as JSON
-        const message = data.message || `${action.toUpperCase()} operation completed successfully.`; // Extract 'message'
+        let message = data.message || `${action.toUpperCase()} operation completed successfully.`; // Extract 'message'
         
+        // Replace escaped newlines (\\n) with actual newlines (\n)
+        message = message.replace(/\\n/g, '\n');
+
         onActionComplete(action, true);
         toast({
           title: "Success",
-          description: message, // Use the extracted message
+          description: message, // Use the processed message
           duration: 7000, // Set duration for readability
         });
       } else {
