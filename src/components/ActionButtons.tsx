@@ -79,11 +79,13 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
       });
 
       if (response.ok) {
-        const result = await response.text();
+        const data = await response.json(); // Parse response as JSON
+        const message = data.message || `${action.toUpperCase()} operation completed successfully.`; // Extract 'message'
+        
         onActionComplete(action, true);
         toast({
           title: "Success",
-          description: result || `${action.toUpperCase()} operation completed successfully.`,
+          description: message, // Use the extracted message
           duration: 7000, // Set duration for readability
         });
       } else {
